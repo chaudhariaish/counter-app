@@ -1,0 +1,39 @@
+name: deploy to server
+
+on: 
+ push:
+   branches: ["main"]
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: setup nodejs
+        uses: actions/setup-node@v2
+        with: 
+          node-version: "14" 
+      - name: install dependancy
+        run: npm install
+      - name: build project
+        run: npm run build
+
+  deploy to ec2 : 
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: copy files via ssh
+        uses: appleboy/ssh-action@master
+        with:
+          ec2_host: ${{secrets.EC2_HOST}}
+          ec2_username: ${{secrets.EC2_USERNAME}}
+          ec2_key: ${{secrets.EC2_KEY}}
+          script: |
+            cd /var/www/html
+            git clone https://chaudhariaish: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@github.com/chaudhariaish/counter-app
+            cd counter-app
+            git pull
+            npm install
+            npm run build
