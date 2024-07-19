@@ -32,12 +32,12 @@ self.__precacheManifest = [
     "url": "/counter-app/static/media/fontawesome-webfont.af7ae505.woff2"
   },
   {
-    "revision": "912ec66d7572ff821749319396470bde",
-    "url": "/counter-app/static/media/fontawesome-webfont.912ec66d.svg"
-  },
-  {
     "revision": "b06871f281fee6b241d60582ae9369b9",
     "url": "/counter-app/static/media/fontawesome-webfont.b06871f2.ttf"
+  },
+  {
+    "revision": "912ec66d7572ff821749319396470bde",
+    "url": "/counter-app/static/media/fontawesome-webfont.912ec66d.svg"
   },
   {
     "revision": "a98ffb55d01944963fd03148701d261e",
