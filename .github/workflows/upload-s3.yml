@@ -3,38 +3,30 @@ name: Deploy to S3
 on:
   push:
     branches:
-      - main  # Change this to your target branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-         ref: production
-         node-version: '14'
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
 
-      - name: Install dependencies
-        run: npm install
+    - name: Print environment variables
+      run: printenv
 
-      - name: Build project
-        run: npm run build
+    - name: Verify build directory
+      run: ls -la ./build
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Sync files to S3
-        run: |
-         set -x
-          aws s3 sync build/ s3://your-bucket-name 
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+    - name: Sync files to S3 with debug
+      run: |
+        set -x
+        aws s3 sync ./build s3://aish-s3-bucket
