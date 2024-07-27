@@ -35,4 +35,3 @@ jobs:
         git add -f build
         git commit -m "Add build files"
         git push
-     
